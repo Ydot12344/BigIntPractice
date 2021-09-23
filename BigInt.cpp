@@ -1,11 +1,24 @@
 #include "BigInt.h"
 
-BigInt::BigInt() : sign(1) {}
+BigInt::BigInt() : sign(1) {
+    num.push_back(0);
+}
+
+BigInt::BigInt(const std::string &s) {
+    sign = s[0] == '-' ? -1 : 1;
+    for(int i = s.size()-1; i >= (2 + sign)%3; --i) {
+        num.push_back(s[i] - '0');
+    }
+    if(num.size() == 1 && num[0] == 0) sign =1;
+}
+
 BigInt::BigInt(int a) : sign(a < 0 ? -1 : 1){
+    a = std::abs(a);
     while(a != 0){
         num.push_back(a%10);
         a/=10;
     }
+    if(num.size() == 1 && num[0] == 0) sign =1;
 }
 BigInt::BigInt(BigInt &&other) : sign(other.sign), num(std::move(other.num)){}
 BigInt::BigInt(const BigInt &other) : sign(other.sign), num(other.num){}
@@ -86,7 +99,7 @@ BigInt &BigInt::operator+=(const BigInt &other) {
             }
             else{
                 tmp = (10 + num[i] - dop)%10;
-                dop = (10 + num[i] - dop)/10;
+                dop =  num[i] - dop < 0 ? 1 : 0;
                 num[i] = tmp;
             }
         }

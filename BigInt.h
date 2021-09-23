@@ -12,6 +12,8 @@ public:
 
     BigInt(BigInt &&other);
 
+    BigInt(const std::string& s);
+
     bool operator<(const BigInt &other) const noexcept;
 
     bool operator>(const BigInt &other) const noexcept;
