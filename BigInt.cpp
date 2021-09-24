@@ -4,6 +4,18 @@ BigInt::BigInt() : sign(1) {
     num.push_back(0);
 }
 
+BigInt &BigInt::operator=(BigInt &&other) noexcept {
+    sign = other.sign;
+    num = std::move(other.num);
+    return *this;
+}
+
+BigInt &BigInt::operator=(const BigInt &other) noexcept {
+    sign = other.sign;
+    num = other.num;
+    return *this;
+}
+
 BigInt::BigInt(const std::string &s) {
     sign = s[0] == '-' ? -1 : 1;
     for(int i = s.size()-1; i >= (2 + sign)%3; --i) {
@@ -20,7 +32,7 @@ BigInt::BigInt(int a) : sign(a < 0 ? -1 : 1){
     }
     if(num.size() == 1 && num[0] == 0) sign =1;
 }
-BigInt::BigInt(BigInt &&other) : sign(other.sign), num(std::move(other.num)){}
+BigInt::BigInt(BigInt &&other)  noexcept : sign(other.sign), num(std::move(other.num)){}
 BigInt::BigInt(const BigInt &other) : sign(other.sign), num(other.num){}
 
 bool BigInt::operator<(const BigInt &other) const noexcept {
@@ -148,4 +160,3 @@ std::ostream& operator<<(std::ostream& stream, const BigInt& other){
         stream << (int)(other.num[i]);
     return stream;
 }
-

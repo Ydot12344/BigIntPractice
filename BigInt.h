@@ -10,9 +10,13 @@ public:
 
     BigInt(const BigInt &other);
 
-    BigInt(BigInt &&other);
+    BigInt(BigInt &&other) noexcept;
 
     BigInt(const std::string& s);
+
+    BigInt& operator=(const BigInt& other) noexcept;
+
+    BigInt& operator=(BigInt&& other) noexcept;
 
     bool operator<(const BigInt &other) const noexcept;
 
@@ -40,8 +44,8 @@ public:
     friend std::ostream& operator<<(std::ostream& stream, const BigInt& other);
 
 private:
-    char sign;
     std::vector<char> num;
+    char sign;
 };
 
 std::istream& operator>>(std::istream& stream, BigInt& other);
