@@ -4,13 +4,13 @@ BigInt::BigInt() : sign(1) {
     num.push_back(0);
 }
 
-BigInt &BigInt::operator=(BigInt &&other) noexcept {
+BigInt &BigInt::operator=(BigInt &&other) & noexcept {
     sign = other.sign;
     num = std::move(other.num);
     return *this;
 }
 
-BigInt &BigInt::operator=(const BigInt &other) noexcept {
+BigInt &BigInt::operator=(const BigInt &other) & noexcept {
     sign = other.sign;
     num = other.num;
     return *this;
@@ -26,11 +26,12 @@ BigInt::BigInt(const std::string &s) {
 
 BigInt::BigInt(int a) : sign(a < 0 ? -1 : 1){
     a = std::abs(a);
+    if(a == 0)
+        num.push_back(0);
     while(a != 0){
         num.push_back(a%10);
         a/=10;
     }
-    if(num.size() == 1 && num[0] == 0) sign =1;
 }
 BigInt::BigInt(BigInt &&other)  noexcept : sign(other.sign), num(std::move(other.num)){}
 BigInt::BigInt(const BigInt &other) : sign(other.sign), num(other.num){}
@@ -140,6 +141,45 @@ BigInt &BigInt::operator-=(const BigInt &other) {
 BigInt BigInt::operator-(const BigInt &other) const {
     BigInt tmp = *this;
     return tmp -= other;
+}
+
+BigInt BigInt::operator*(const BigInt &other) const {
+    BigInt tmp = *this;
+    return tmp *= other;
+}
+
+BigInt& BigInt::operator*=(const BigInt &other) {
+    if(other == BigInt(0) || *this == BigInt(0)){
+        *this = 0;
+        this->sign = 1;
+        return *this;
+    }
+
+    BigInt res = 0;
+    BigInt tmp = 0;
+    char res_sign = other.sign * sign;
+
+    for(int i = 0; i < other.num.size(); ++i){
+        tmp.num.clear();
+        for(int j = 0; j < i; ++j)
+            tmp.num.push_back(0);
+
+        int dop = 0;
+        int tmp_num = 0;
+        for(char j : this->num){
+            tmp_num = (j * other.num[i]  + dop) % 10;
+            dop = (j * other.num[i]  + dop) / 10;
+            tmp.num.push_back(tmp_num);
+        }
+        if(dop != 0)
+            tmp.num.push_back(dop);
+
+        res += tmp;
+    }
+
+    *this = std::move(res);
+    this->sign = res_sign;
+    return *this;
 }
 
 std::istream& operator>>(std::istream& stream, BigInt& other){

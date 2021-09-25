@@ -12,11 +12,11 @@ public:
 
     BigInt(BigInt &&other) noexcept;
 
-    BigInt(const std::string& s);
+    explicit BigInt(const std::string& s);
 
-    BigInt& operator=(const BigInt& other) noexcept;
+    BigInt& operator=(const BigInt& other) & noexcept;
 
-    BigInt& operator=(BigInt&& other) noexcept;
+    BigInt& operator=(BigInt&& other) & noexcept;
 
     bool operator<(const BigInt &other) const noexcept;
 
@@ -39,6 +39,15 @@ public:
     BigInt operator-(const BigInt &other) const;
 
     BigInt operator-() const;
+
+    BigInt& operator*= (const BigInt& other);
+    BigInt  operator*  (const BigInt& other) const;
+
+    BigInt& operator/= (const BigInt& other);
+    BigInt  operator/  (const BigInt& other) const;
+
+    BigInt& operator%= (const BigInt& other);
+    BigInt  operator%  (const BigInt& other) const;
 
     friend std::istream& operator>>(std::istream& stream, BigInt& other);
     friend std::ostream& operator<<(std::ostream& stream, const BigInt& other);
