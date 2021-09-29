@@ -182,6 +182,57 @@ BigInt& BigInt::operator*=(const BigInt &other) {
     return *this;
 }
 
+BigInt &BigInt::operator/=(const BigInt &other) {
+    if(other == 0)
+        throw BigInt::divided_by_zero();
+
+    char sig = other.sign * sign;
+    this->sign = 1;
+
+    int l = this->num.size() - other.num.size();
+    BigInt ans;
+    while(l >= 0){
+        BigInt tmp;
+        tmp.num = std::vector<char>(this->num.begin() + l, this->num.end());
+        int cnt = 0;
+        while(tmp >= (other >= 0 ? other : -other)){
+            cnt++;
+            tmp -= (other >= 0 ? other : -other);
+        }
+        BigInt exp;
+        exp.num.resize(l + 1);
+        exp.num[l] = 1;
+        *this -= BigInt(cnt) * (other >= 0 ? other : -other) * exp;
+        if(this->num.size() - other.num.size() == l)
+            l--;
+        else
+            l = this->num.size() - other.num.size();
+
+        ans += BigInt(cnt) * exp;
+    }
+
+    *this = std::move(ans);
+    if(num.size() == 1 && num[0] == 0)
+       sign =1;
+    else
+        this->sign = sig;
+    return *this;
+}
+
+BigInt BigInt::operator/(const BigInt &other) const {
+    BigInt  tmp = *this;
+    return tmp /= other;
+}
+
+BigInt &BigInt::operator%=(const BigInt &other) {
+    return *this -= *this / other * other;
+}
+
+BigInt BigInt::operator%(const BigInt &other) const {
+    BigInt tmp = *this;
+    return tmp %= other;
+}
+
 std::istream& operator>>(std::istream& stream, BigInt& other){
     std::string s;
     stream >> s;

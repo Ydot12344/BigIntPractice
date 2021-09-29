@@ -4,6 +4,7 @@
 
 class BigInt {
 public:
+    class divided_by_zero : std::exception{};
     BigInt();
 
     BigInt(int a);
