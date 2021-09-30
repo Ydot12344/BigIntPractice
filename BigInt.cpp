@@ -24,7 +24,7 @@ BigInt::BigInt(const std::string &s) {
     if(num.size() == 1 && num[0] == 0) sign =1;
 }
 
-BigInt::BigInt(int a) : sign(a < 0 ? -1 : 1){
+BigInt::BigInt(int64_t a) : sign(a < 0 ? -1 : 1){
     a = std::abs(a);
     if(a == 0)
         num.push_back(0);
@@ -33,6 +33,16 @@ BigInt::BigInt(int a) : sign(a < 0 ? -1 : 1){
         a/=10;
     }
 }
+
+BigInt::BigInt(uint64_t a): sign(1){
+    if(a == 0)
+        num.push_back(0);
+    while(a != 0){
+        num.push_back(a % 10);
+        a/=10;
+    }
+}
+
 BigInt::BigInt(BigInt &&other)  noexcept : sign(other.sign), num(std::move(other.num)){}
 BigInt::BigInt(const BigInt &other) : sign(other.sign), num(other.num){}
 

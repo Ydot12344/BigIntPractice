@@ -7,13 +7,21 @@ public:
     class divided_by_zero : std::exception{};
     BigInt();
 
-    BigInt(int a);
+    BigInt(int64_t a);
+
+    BigInt(uint64_t a);
+
+    template<typename T>
+    BigInt(T a) : BigInt(static_cast<typename std::enable_if<std::is_integral<T>::value,
+                         typename std::conditional<std::is_unsigned<T>::value,uint64_t,int64_t>::type>::type>(a)) {};
+
+    BigInt(const char* str) : BigInt(std::string(str)){}
+
+    BigInt(const std::string& s);
 
     BigInt(const BigInt &other);
 
     BigInt(BigInt &&other) noexcept;
-
-    explicit BigInt(const std::string& s);
 
     BigInt& operator=(const BigInt& other) & noexcept;
 
