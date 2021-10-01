@@ -6,6 +6,7 @@ std::unordered_map<std::string, BigInt (BigInt::*) (const BigInt&) const> arithm
         {"+", &BigInt::operator+}, {"-", &BigInt::operator-}, {"*", &BigInt::operator*},
         {"/", &BigInt::operator/}, {"%", &BigInt::operator%}
 };
+
 std::unordered_map<std::string, bool (BigInt::*) (const BigInt&) const> logic_op = {
         {">", &BigInt::operator>}, {">=", &BigInt::operator>=},{"<", &BigInt::operator<},
         {"<=", &BigInt::operator<=}, {"==", &BigInt::operator==}, {"!=", &BigInt::operator!=}
