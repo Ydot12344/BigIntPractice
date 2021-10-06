@@ -1,7 +1,7 @@
 #pragma once
 #include<iostream>
 #include<vector>
-
+#include<string_view>
 class BigInt {
 public:
     class divided_by_zero : std::exception{};
@@ -14,7 +14,7 @@ public:
     template<typename T, typename std::enable_if<std::is_integral<T>::value, bool>::type = true>
     BigInt(T a) : BigInt(static_cast<typename std::conditional<std::is_unsigned<T>::value,uint64_t,int64_t>::type>(a)) {};
 
-    BigInt(const std::string& s);
+    BigInt(std::string_view s);
 
     BigInt(const BigInt &other);
 

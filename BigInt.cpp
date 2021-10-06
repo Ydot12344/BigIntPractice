@@ -16,7 +16,7 @@ BigInt &BigInt::operator=(const BigInt &other) & noexcept {
     return *this;
 }
 
-BigInt::BigInt(const std::string &s) {
+BigInt::BigInt(std::string_view s) {
     sign = s[0] == '-' ? -1 : 1;
     for(int i = s.size()-1; i >= (2 + sign)%3; --i) {
         num.push_back(s[i] - '0');
