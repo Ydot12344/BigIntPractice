@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 enable_testing(true)
 
-add_executable(BigInt main.cpp BigInt.h BigInt.cpp)
+add_executable(BigInt main.cpp BigInt.h BigInt.cpp Parser.h)
 
 
 add_subdirectory(gtest)

@@ -4,6 +4,7 @@
 
 #include"gtest/gtest.h"
 #include "../BigInt.h"
+#include "../Parser.h"
 
 TEST(TestBigInt, test1){
     BigInt a = BigInt("1000");
@@ -104,3 +105,13 @@ TEST(TestBigInt, devide_by_zero){
     EXPECT_THROW(a / b, BigInt::divided_by_zero);
 }
 
+TEST(TestParser, test){
+    std::string str = "((100 + 2)*10) % 3";
+    Parser<BigInt> parser(str);
+    EXPECT_EQ(parser.expression(), BigInt(0));
+
+
+    str = "(999 - 8) + 123*298 - 281312389712309 % 1232312";
+    parser = Parser<BigInt>(str);
+    EXPECT_EQ(parser.expression(), BigInt(-518560));
+}
